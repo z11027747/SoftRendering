@@ -1,7 +1,7 @@
 
-#rmdir -q -s build
-#mkdir build
-#pause
+rmdir -q -s build
+mkdir build
+pause
 
 cd build
 cmake -G "MinGW Makefiles" ..

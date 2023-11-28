@@ -1,0 +1,3 @@
+D:/W/GIT_ROOT/SoftRendering/build/CMakeFiles/softrendering.dir
+D:/W/GIT_ROOT/SoftRendering/build/CMakeFiles/edit_cache.dir
+D:/W/GIT_ROOT/SoftRendering/build/CMakeFiles/rebuild_cache.dir
