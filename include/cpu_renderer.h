@@ -2,40 +2,35 @@
 #define _CPU_RENDERER_H
 
 #include "color.h"
+#include "vector2.h"
 
 class CPURenderer {
 
 public:
 	unsigned int w;
 	unsigned int h;
+	unsigned int channels;
 
 	unsigned char* colorAttachment;
 
 	CPURenderer(unsigned int width, unsigned int height)
-		: w(width), h(height)
+		: w(width), h(height), channels(3)
 	{
-		colorAttachment = new unsigned char[width * height * 4];
+		colorAttachment = new unsigned char[width * height * channels];
 	}
 
 	void Render() {
-		for (int i = 0; i < 400; i++)
-		{
-			SetColor(i, i, Color(255, 0, 0));
-		}
+
+		DrawLine(Vector2<int>(200, 200), Vector2<int>(400, 400), Color::red);
+		DrawLine(Vector2<int>(400, 400), Vector2<int>(600, 200), Color::red);
+		DrawLine(Vector2<int>(200, 200), Vector2<int>(600, 200), Color::red);
 	}
 
-	void SetColor(int x, int y, const Color& color) const
-	{
-		int index = (x + y * w) * 4;
-		for (int i = 0; i < 4; i++)
-		{
-			colorAttachment[index + 0] = color.r;
-			colorAttachment[index + 1] = color.g;
-			colorAttachment[index + 2] = color.b;
-			colorAttachment[index + 3] = color.a;
-		}
-	}
+	//bresenman算法画线
+	void DrawLine(const Vector2<int>& start, const Vector2<int>& end, const Color& color) const;
 
+private:
+	void setColor(int x, int y, const Color& color) const;
 };
 
 #endif 

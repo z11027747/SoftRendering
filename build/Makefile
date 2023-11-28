@@ -128,6 +128,30 @@ softrendering/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softrendering.dir\build.make CMakeFiles/softrendering.dir/build
 .PHONY : softrendering/fast
 
+src/color.obj: src/color.cpp.obj
+.PHONY : src/color.obj
+
+# target to build an object file
+src/color.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softrendering.dir\build.make CMakeFiles/softrendering.dir/src/color.cpp.obj
+.PHONY : src/color.cpp.obj
+
+src/color.i: src/color.cpp.i
+.PHONY : src/color.i
+
+# target to preprocess a source file
+src/color.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softrendering.dir\build.make CMakeFiles/softrendering.dir/src/color.cpp.i
+.PHONY : src/color.cpp.i
+
+src/color.s: src/color.cpp.s
+.PHONY : src/color.s
+
+# target to generate assembly for a file
+src/color.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softrendering.dir\build.make CMakeFiles/softrendering.dir/src/color.cpp.s
+.PHONY : src/color.cpp.s
+
 src/cpu_renderer.obj: src/cpu_renderer.cpp.obj
 .PHONY : src/cpu_renderer.obj
 
@@ -209,6 +233,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... softrendering
+	@echo ... src/color.obj
+	@echo ... src/color.i
+	@echo ... src/color.s
 	@echo ... src/cpu_renderer.obj
 	@echo ... src/cpu_renderer.i
 	@echo ... src/cpu_renderer.s

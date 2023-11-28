@@ -68,11 +68,26 @@ include CMakeFiles/softrendering.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/softrendering.dir/flags.make
 
+CMakeFiles/softrendering.dir/src/color.cpp.obj: CMakeFiles/softrendering.dir/flags.make
+CMakeFiles/softrendering.dir/src/color.cpp.obj: CMakeFiles/softrendering.dir/includes_CXX.rsp
+CMakeFiles/softrendering.dir/src/color.cpp.obj: D:/W/GIT_ROOT/SoftRendering/src/color.cpp
+CMakeFiles/softrendering.dir/src/color.cpp.obj: CMakeFiles/softrendering.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/softrendering.dir/src/color.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/softrendering.dir/src/color.cpp.obj -MF CMakeFiles\softrendering.dir\src\color.cpp.obj.d -o CMakeFiles\softrendering.dir\src\color.cpp.obj -c D:\W\GIT_ROOT\SoftRendering\src\color.cpp
+
+CMakeFiles/softrendering.dir/src/color.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/softrendering.dir/src/color.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\W\GIT_ROOT\SoftRendering\src\color.cpp > CMakeFiles\softrendering.dir\src\color.cpp.i
+
+CMakeFiles/softrendering.dir/src/color.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/softrendering.dir/src/color.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\W\GIT_ROOT\SoftRendering\src\color.cpp -o CMakeFiles\softrendering.dir\src\color.cpp.s
+
 CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj: CMakeFiles/softrendering.dir/flags.make
 CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj: CMakeFiles/softrendering.dir/includes_CXX.rsp
 CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj: D:/W/GIT_ROOT/SoftRendering/src/cpu_renderer.cpp
 CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj: CMakeFiles/softrendering.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj -MF CMakeFiles\softrendering.dir\src\cpu_renderer.cpp.obj.d -o CMakeFiles\softrendering.dir\src\cpu_renderer.cpp.obj -c D:\W\GIT_ROOT\SoftRendering\src\cpu_renderer.cpp
 
 CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.i: cmake_force
@@ -87,7 +102,7 @@ CMakeFiles/softrendering.dir/src/glad/glad.c.obj: CMakeFiles/softrendering.dir/f
 CMakeFiles/softrendering.dir/src/glad/glad.c.obj: CMakeFiles/softrendering.dir/includes_C.rsp
 CMakeFiles/softrendering.dir/src/glad/glad.c.obj: D:/W/GIT_ROOT/SoftRendering/src/glad/glad.c
 CMakeFiles/softrendering.dir/src/glad/glad.c.obj: CMakeFiles/softrendering.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/softrendering.dir/src/glad/glad.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/softrendering.dir/src/glad/glad.c.obj"
 	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softrendering.dir/src/glad/glad.c.obj -MF CMakeFiles\softrendering.dir\src\glad\glad.c.obj.d -o CMakeFiles\softrendering.dir\src\glad\glad.c.obj -c D:\W\GIT_ROOT\SoftRendering\src\glad\glad.c
 
 CMakeFiles/softrendering.dir/src/glad/glad.c.i: cmake_force
@@ -102,7 +117,7 @@ CMakeFiles/softrendering.dir/src/main.cpp.obj: CMakeFiles/softrendering.dir/flag
 CMakeFiles/softrendering.dir/src/main.cpp.obj: CMakeFiles/softrendering.dir/includes_CXX.rsp
 CMakeFiles/softrendering.dir/src/main.cpp.obj: D:/W/GIT_ROOT/SoftRendering/src/main.cpp
 CMakeFiles/softrendering.dir/src/main.cpp.obj: CMakeFiles/softrendering.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/softrendering.dir/src/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/softrendering.dir/src/main.cpp.obj"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/softrendering.dir/src/main.cpp.obj -MF CMakeFiles\softrendering.dir\src\main.cpp.obj.d -o CMakeFiles\softrendering.dir\src\main.cpp.obj -c D:\W\GIT_ROOT\SoftRendering\src\main.cpp
 
 CMakeFiles/softrendering.dir/src/main.cpp.i: cmake_force
@@ -115,6 +130,7 @@ CMakeFiles/softrendering.dir/src/main.cpp.s: cmake_force
 
 # Object files for target softrendering
 softrendering_OBJECTS = \
+"CMakeFiles/softrendering.dir/src/color.cpp.obj" \
 "CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj" \
 "CMakeFiles/softrendering.dir/src/glad/glad.c.obj" \
 "CMakeFiles/softrendering.dir/src/main.cpp.obj"
@@ -122,6 +138,7 @@ softrendering_OBJECTS = \
 # External object files for target softrendering
 softrendering_EXTERNAL_OBJECTS =
 
+D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/src/color.cpp.obj
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/src/glad/glad.c.obj
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/src/main.cpp.obj
@@ -130,7 +147,7 @@ D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: D:/W/GIT_ROOT/SoftRendering/l
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/linkLibs.rsp
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/objects1.rsp
 D:/W/GIT_ROOT/SoftRendering/bin/softrendering.exe: CMakeFiles/softrendering.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable D:\W\GIT_ROOT\SoftRendering\bin\softrendering.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\W\GIT_ROOT\SoftRendering\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable D:\W\GIT_ROOT\SoftRendering\bin\softrendering.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\softrendering.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

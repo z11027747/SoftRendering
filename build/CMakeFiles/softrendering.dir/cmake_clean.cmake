@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/softrendering.dir/src/color.cpp.obj"
+  "CMakeFiles/softrendering.dir/src/color.cpp.obj.d"
   "CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj"
   "CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj.d"
   "CMakeFiles/softrendering.dir/src/glad/glad.c.obj"
