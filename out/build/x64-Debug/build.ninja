@@ -49,6 +49,15 @@ cmake_ninja_workdir = D$:/G/SoftRendering/out/build/x64-Debug/
 
 build cmake_object_order_depends_target_softrendering: phony || CMakeFiles/softrendering.dir
 
+build CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj: CXX_COMPILER__softrendering_unscanned_Debug D$:/G/SoftRendering/src/cpu_renderer.cpp || cmake_object_order_depends_target_softrendering
+  DEP_FILE = CMakeFiles\softrendering.dir\src\cpu_renderer.cpp.obj.d
+  FLAGS = -g -std=gnu++1z
+  INCLUDES = -ID:/G/SoftRendering/include
+  OBJECT_DIR = CMakeFiles\softrendering.dir
+  OBJECT_FILE_DIR = CMakeFiles\softrendering.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\softrendering.dir\
+  TARGET_PDB = D:\G\SoftRendering\bin\softrendering.pdb
+
 build CMakeFiles/softrendering.dir/src/glad/glad.c.obj: C_COMPILER__softrendering_unscanned_Debug D$:/G/SoftRendering/src/glad/glad.c || cmake_object_order_depends_target_softrendering
   DEP_FILE = CMakeFiles\softrendering.dir\src\glad\glad.c.obj.d
   FLAGS = -g
@@ -75,7 +84,7 @@ build CMakeFiles/softrendering.dir/src/main.cpp.obj: CXX_COMPILER__softrendering
 #############################################
 # Link the executable D:\G\SoftRendering\bin\softrendering.exe
 
-build D$:/G/SoftRendering/bin/softrendering.exe: CXX_EXECUTABLE_LINKER__softrendering_Debug CMakeFiles/softrendering.dir/src/glad/glad.c.obj CMakeFiles/softrendering.dir/src/main.cpp.obj | D$:/G/SoftRendering/lib/glfw3.dll
+build D$:/G/SoftRendering/bin/softrendering.exe: CXX_EXECUTABLE_LINKER__softrendering_Debug CMakeFiles/softrendering.dir/src/cpu_renderer.cpp.obj CMakeFiles/softrendering.dir/src/glad/glad.c.obj CMakeFiles/softrendering.dir/src/main.cpp.obj | D$:/G/SoftRendering/lib/glfw3.dll
   FLAGS = -g
   LINK_LIBRARIES = D:/G/SoftRendering/lib/glfw3.dll  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\softrendering.dir
