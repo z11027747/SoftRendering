@@ -105,4 +105,5 @@ CMakeFiles/softrendering.dir/src/main.cpp.obj: \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\istream.tcc \
  D:/W/GIT_ROOT/SoftRendering/include/cpu_renderer.h \
  D:/W/GIT_ROOT/SoftRendering/include/color.h \
- D:/W/GIT_ROOT/SoftRendering/include/vector2.h
+ D:/W/GIT_ROOT/SoftRendering/include/vector2.h \
+ D:/W/GIT_ROOT/SoftRendering/include/cohen_sutherland.h

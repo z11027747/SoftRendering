@@ -3,7 +3,7 @@
 
 #include "cpu_renderer.h"
 
-void CPURenderer::DrawLine(const Vector2<int>& start, const Vector2<int>& end, const Color& color) const
+void CPURenderer::drawLineWithoutClip(const Vector2<int>& start, const Vector2<int>& end, const Color& color) const
 {
 	int dx = std::abs(end.x - start.x);
 	int dy = std::abs(end.y - start.y);
