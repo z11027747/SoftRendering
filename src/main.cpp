@@ -4,13 +4,17 @@
 
 #include "cpu_renderer.h"
 
-const unsigned int WIDTH = 800;
-const unsigned int HEIGHT = 600;
+const unsigned int WIN_WIDTH = 1000;
+const unsigned int WIN_HEIGHT = 1000;
 
 unsigned int VBO, VAO;
 void initRenderData();
+
+const unsigned int TEX_WIDTH = WIN_WIDTH / 10;
+const unsigned int TEX_HEIGHT = WIN_HEIGHT / 10;
 unsigned int colorTextureID;
 void initTexture();
+
 unsigned int shaderProgram;
 void initShaderProgram();
 
@@ -25,15 +29,15 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "SoftRendering Engine", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, "SoftRendering Engine", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-	cpuRenderer = new CPURenderer(WIDTH, HEIGHT);
 
 	initRenderData();
 	initTexture();
 	initShaderProgram();
+
+	cpuRenderer = new CPURenderer(TEX_WIDTH, TEX_HEIGHT);
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -46,6 +50,7 @@ int main() {
 	}
 
 	clear();
+	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
 }
@@ -80,7 +85,7 @@ void initTexture()
 	glGenTextures(1, &colorTextureID);
 	glBindTexture(GL_TEXTURE_2D, colorTextureID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, TEX_WIDTH, TEX_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -142,7 +147,7 @@ void draw()
 	glUseProgram(shaderProgram);
 
 	glBindTexture(GL_TEXTURE_2D, colorTextureID);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, cpuRenderer->colorAttachment);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, TEX_WIDTH, TEX_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, cpuRenderer->colorAttachment);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
