@@ -3,8 +3,7 @@
 
 #include "cpu_renderer.h"
 
-void CPURenderer::setColor(int x, int y, const Color& color) const
-{
+void CPURenderer::setColor(int x, int y, const Color& color) const {
 	int index = (x + y * w) * channels;
 	for (int i = 0; i < channels; i++)
 	{
@@ -14,7 +13,14 @@ void CPURenderer::setColor(int x, int y, const Color& color) const
 	}
 }
 
-void CPURenderer::bresenmanDrawLine(const Vector2<int>& start, const Vector2<int>& end, const Color& color) const
+void CPURenderer::clearColor() {
+	for (int i = 0; i < w * h * channels; i++)
+	{
+		colorAttachment[i] = 0;
+	}
+}
+
+void CPURenderer::bresenmanDrawLine(const Vector2& start, const Vector2& end, const Color& color) const
 {
 	int x1 = start.x, y1 = start.y;
 	int x2 = end.x, y2 = end.y;
@@ -52,7 +58,7 @@ int RIGHT = 2;  // 0010
 int BOTTOM = 4; // 0100
 int TOP = 8;    // 1000
 
-bool CPURenderer::cohenSutherlandLineClip(Vector2<int>& v0, Vector2<int>& v1, const Vector2<int>& max)
+bool CPURenderer::cohenSutherlandLineClip(Vector2& v0, Vector2& v1, const Vector2& max)
 {
 	int outcode0 = cohenSutherlandLineComputeOutCode(v0, max);
 	int outcode1 = cohenSutherlandLineComputeOutCode(v1, max);
@@ -103,7 +109,7 @@ bool CPURenderer::cohenSutherlandLineClip(Vector2<int>& v0, Vector2<int>& v1, co
 	return accept;
 }
 
-int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const
+int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2& v, const Vector2& max) const
 {
 	int code = INSIDE;
 

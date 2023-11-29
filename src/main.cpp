@@ -4,8 +4,8 @@
 
 #include "cpu_renderer.h"
 
-const unsigned int WIN_WIDTH = 1000;
-const unsigned int WIN_HEIGHT = 1000;
+const unsigned int WIN_WIDTH = 800;
+const unsigned int WIN_HEIGHT = 600;
 
 unsigned int VBO, VAO;
 void initRenderData();
@@ -39,11 +39,17 @@ int main() {
 
 	cpuRenderer = new CPURenderer(TEX_WIDTH, TEX_HEIGHT);
 
+	float deltaTime = 0.0f;
+	float lastTime = 0.0f;
+
 	while (!glfwWindowShouldClose(window)) {
 
 		glfwPollEvents();
 
-		cpuRenderer->Render();
+		float currentTime = (float)glfwGetTime();
+		deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+		cpuRenderer->Render(currentTime, deltaTime);
 
 		draw();
 		glfwSwapBuffers(window);
