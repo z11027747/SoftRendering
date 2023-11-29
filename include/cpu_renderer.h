@@ -32,22 +32,27 @@ public:
 
 	void Render() {
 
-		DrawLine(Vector2<int>(-20, -20), Vector2<int>(40, 40), Color::red);
-		DrawLine(Vector2<int>(40, 40), Vector2<int>(60, 20), Color::red);
-		DrawLine(Vector2<int>(20, 20), Vector2<int>(600, 20), Color::red);
-
+		DrawTriangle(Vector2<int>(20, 20), Vector2<int>(40, 40), Vector2<int>(60, 20), Color::red);
 		DrawLine(Vector2<int>(-10, 10), Vector2<int>(10, 10), Color::white);
-
 		DrawLine(Vector2<int>(40, 50), Vector2<int>(60, 10), Color::green);
 		DrawLine(Vector2<int>(40, 10), Vector2<int>(60, 50), Color::green);
 	}
 
+	//绘制直线
 	void DrawLine(Vector2<int> start, Vector2<int> end, const Color& color) {
 
 		bool clipResult = cohenSutherlandLineClip(start, end, Vector2<int>(w - 1, h - 1));
 		if (clipResult) {
 			bresenmanDrawLine(start, end, color);
 		}
+	}
+
+	//绘制三角形
+	void DrawTriangle(Vector2<int> p1, Vector2<int> p2, Vector2<int> p3, const Color& color)
+	{
+		DrawLine(p1, p2, color);
+		DrawLine(p2, p3, color);
+		DrawLine(p1, p3, color);
 	}
 
 private:
