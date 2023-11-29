@@ -1,4 +1,4 @@
-#ifndef _VECTOR_3_H
+﻿#ifndef _VECTOR_3_H
 #define _VECTOR_3_H
 
 template<typename T>
