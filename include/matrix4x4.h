@@ -21,6 +21,7 @@ struct Matrix4x4 {
 
 	void SetT(float x, float y, float z);
 	void SetR_Y(float theta);
+	void SetS(float x, float y, float z);
 
 	friend Vector4 operator* (const Matrix4x4& m, const Vector4& p);
 	friend Matrix4x4 operator* (const Matrix4x4& a, const Matrix4x4& b);

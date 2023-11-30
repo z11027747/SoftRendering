@@ -20,8 +20,7 @@ public:
 	}
 
 	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
-		std::cout << "x: " << x << ", y: " << y << "\n";
+		std::cout << name << ": " << "x: " << x << ", y: " << y << "\n";
 	}
 };
 

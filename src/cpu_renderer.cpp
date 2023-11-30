@@ -20,7 +20,8 @@ void CPURenderer::clearColor() {
 	}
 }
 
-void CPURenderer::bresenmanDrawLine(const Vector2& start, const Vector2& end, const Color& color) const
+void CPURenderer::bresenmanDrawLine(const Vector2& start, const Vector2& end,
+	const Color& color) const
 {
 	int x1 = start.x, y1 = start.y;
 	int x2 = end.x, y2 = end.y;
@@ -58,7 +59,7 @@ int RIGHT = 2;  // 0010
 int BOTTOM = 4; // 0100
 int TOP = 8;    // 1000
 
-bool CPURenderer::cohenSutherlandLineClip(Vector2& v0, Vector2& v1, const Vector2& max)
+bool CPURenderer::cohenSutherlandLineClip(Vector2& v0, Vector2& v1, const Vector2& max) const
 {
 	int outcode0 = cohenSutherlandLineComputeOutCode(v0, max);
 	int outcode1 = cohenSutherlandLineComputeOutCode(v1, max);
@@ -113,14 +114,132 @@ int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2& v, const Vecto
 {
 	int code = INSIDE;
 
-	if (v.x < 0)
-		code |= LEFT;
-	else if (v.x > max.x)
-		code |= RIGHT;
-	if (v.y < 0)
-		code |= BOTTOM;
-	else if (v.y > max.y)
-		code |= TOP;
+	if (v.x < 0) code |= LEFT;
+	else if (v.x > max.x) code |= RIGHT;
+	if (v.y < 0) code |= BOTTOM;
+	else if (v.y > max.y) code |= TOP;
 
 	return code;
+}
+
+int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vector2& v3,
+	Trapezoid& trapezoid1, Trapezoid& trapezoid2)  const {
+
+	//y排序
+	std::vector<Vector2> vertices{ v1,v2,v3 };
+	std::sort(vertices.begin(), vertices.end(),
+		[&](Vector2 lft, Vector2 rhd) -> bool { return lft.y > rhd.y; });
+
+	//共线
+	if ((vertices[0].x == vertices[1].x && vertices[0].x == vertices[2].x)
+		|| (vertices[0].y == vertices[1].y && vertices[0].y == vertices[2].y))
+	{
+		return 0;
+	}
+
+	//上平底
+	if (vertices[0].y == vertices[1].y) {
+		trapezoid1.top = vertices[0].y;
+		trapezoid1.bottom = vertices[2].y;
+		trapezoid1.ld = vertices[0];
+		trapezoid1.lt = vertices[2];
+		trapezoid1.rd = vertices[1];
+		trapezoid1.rt = vertices[2];
+
+		return 1;
+	}
+
+	//下平底
+	if (vertices[1].y == vertices[2].y) {
+		trapezoid1.top = vertices[0].y;
+		trapezoid1.bottom = vertices[2].y;
+		trapezoid1.ld = vertices[0];
+		trapezoid1.lt = vertices[1];
+		trapezoid1.rd = vertices[0];
+		trapezoid1.rt = vertices[2];
+
+		return 1;
+	}
+
+	//直线方程，求中点平底x
+	int xmid = (vertices[1].y - vertices[0].y) / (vertices[2].y - vertices[0].y)
+		* (vertices[2].x - vertices[0].x) + vertices[0].x;
+
+	//判断左右
+	if (xmid > vertices[1].x) {
+		trapezoid1.top = vertices[0].y;
+		trapezoid1.bottom = vertices[1].y;
+		trapezoid1.ld = vertices[0];
+		trapezoid1.lt = vertices[1];
+		trapezoid1.rd = vertices[0];
+		trapezoid1.rt = vertices[2];
+
+		trapezoid2.top = vertices[1].y;
+		trapezoid2.bottom = vertices[2].y;
+		trapezoid2.ld = vertices[1];
+		trapezoid2.lt = vertices[2];
+		trapezoid2.rd = vertices[0];
+		trapezoid2.rt = vertices[2];
+
+		return 2;
+	}
+	else {
+		trapezoid1.top = vertices[0].y;
+		trapezoid1.bottom = vertices[1].y;
+		trapezoid1.ld = vertices[0];
+		trapezoid1.lt = vertices[2];
+		trapezoid1.rd = vertices[0];
+		trapezoid1.rt = vertices[1];
+
+		trapezoid2.top = vertices[1].y;
+		trapezoid2.bottom = vertices[2].y;
+		trapezoid2.ld = vertices[0];
+		trapezoid2.lt = vertices[2];
+		trapezoid2.rd = vertices[1];
+		trapezoid2.rt = vertices[2];
+
+		return 2;
+	}
+}
+void CPURenderer::drawTrapezoid(const Trapezoid& trapezoid,
+	const Color& color) const
+{
+	int y = trapezoid.top;
+	while (y >= trapezoid.bottom) {
+		Scanline scanline = genScanline(trapezoid, y);
+
+		int start = scanline.start;
+		int width = scanline.width;
+		int step = width > 0 ? 1 : -1;
+
+		while (width != 0) {
+			setColor(start, y, color);
+
+			width -= step;
+			start += step;
+		}
+
+		y -= 1;
+	}
+}
+
+Scanline CPURenderer::genScanline(const Trapezoid& trapezoid, int beginY) const {
+
+	//左交点
+	float lt = (float)(beginY - trapezoid.ld.y) / (float)(trapezoid.lt.y - trapezoid.ld.y);
+	int lx = (int)std::floor(trapezoid.ld.x + (trapezoid.lt.x - trapezoid.ld.x) * lt);
+
+	//右交点
+	float rt = (beginY - trapezoid.rd.y) * 1.0f / (trapezoid.rt.y - trapezoid.rd.y);
+	int rx = (int)std::floor(trapezoid.rd.x + (trapezoid.rt.x - trapezoid.rd.x) * rt);
+
+	Scanline scanline;
+	scanline.start = lx;
+	scanline.width = (rx - lx);
+
+	//std::cout << " genScanline  =======================> ";
+	//std::cout << "lx: " << lx << ", ly: " << ly << ", width" << scanline.width;
+	//std::cout << "\n";
+
+	return scanline;
 }

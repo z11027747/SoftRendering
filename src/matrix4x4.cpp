@@ -31,6 +31,12 @@ void Matrix4x4::SetR_Y(float radians) {
 	m31 = sin; m33 = cos;
 }
 
+void Matrix4x4::SetS(float x, float y, float z) {
+	m11 *= x;
+	m22 *= y;
+	m33 *= z;
+}
+
 Vector4 operator*(const Matrix4x4& m, const Vector4& p)
 {
 	Vector4 result;

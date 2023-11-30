@@ -10,8 +10,8 @@ const unsigned int WIN_HEIGHT = 600;
 unsigned int VBO, VAO;
 void initRenderData();
 
-const unsigned int TEX_WIDTH = WIN_WIDTH / 10;
-const unsigned int TEX_HEIGHT = WIN_HEIGHT / 10;
+const unsigned int TEX_WIDTH = WIN_WIDTH;
+const unsigned int TEX_HEIGHT = WIN_HEIGHT;
 unsigned int colorTextureID;
 void initTexture();
 

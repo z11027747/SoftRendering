@@ -34,12 +34,12 @@ public:
 			matT.m31 = 0.0f; matT.m32 = 0.0f; matT.m33 = 1.0f; matT.m34 = -(near + far) / 2;
 			matT.m41 = 0.0f; matT.m42 = 0.0f; matT.m43 = 0.0f; matT.m44 = 1.0f;
 
-			matT.Print("matT");
+			//matT.Print("matT");
 
 			float height = size * 2;
 			float width = height * aspect;
 
-			std::cout << "width: " << width << ", height: " << height << "\n";
+			//std::cout << "width: " << width << ", height: " << height << "\n";
 
 			//缩放						    
 			//x:[-w/2,w/2] -> [-1,1] => *2/w
@@ -51,11 +51,11 @@ public:
 			matS.m31 = 0.0f; matS.m32 = 0.0f; matS.m33 = 2 / (far - near); matS.m34 = 0.0f;
 			matS.m41 = 0.0f; matS.m42 = 0.0f; matS.m43 = 0.0f; matS.m44 = 1.0f;
 
-			matS.Print("matS");
+			//matS.Print("matS");
 
 			matProject = matS * matT;
 
-			matProject.Print("matProject");
+			//matProject.Print("matProject");
 		}
 	}
 
