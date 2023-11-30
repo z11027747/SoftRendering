@@ -36,7 +36,7 @@ public:
 
 			matT.Print("matT");
 
-			float height = size;
+			float height = size * 2;
 			float width = height * aspect;
 
 			std::cout << "width: " << width << ", height: " << height << "\n";
@@ -46,8 +46,8 @@ public:
 			//y:[-h/2,h/2] -> [-1,1] => *2/h  
 			//z:[n-(n+f)/2,f-(n+f)/2] -> [-(f-n)/2,(f-n)/2] -> [-1,1] => *2/(f-n)	  		
 			Matrix4x4 matS;
-			matS.m11 = 1 / width; matS.m12 = 0.0f; matS.m13 = 0.0f; matS.m14 = 0.0f;
-			matS.m21 = 0.0f; matS.m22 = 1 / height; matS.m23 = 0.0f; matS.m24 = 0.0f;
+			matS.m11 = 2 / width; matS.m12 = 0.0f; matS.m13 = 0.0f; matS.m14 = 0.0f;
+			matS.m21 = 0.0f; matS.m22 = 2 / height; matS.m23 = 0.0f; matS.m24 = 0.0f;
 			matS.m31 = 0.0f; matS.m32 = 0.0f; matS.m33 = 2 / (far - near); matS.m34 = 0.0f;
 			matS.m41 = 0.0f; matS.m42 = 0.0f; matS.m43 = 0.0f; matS.m44 = 1.0f;
 
