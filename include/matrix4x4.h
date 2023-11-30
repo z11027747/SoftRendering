@@ -22,11 +22,11 @@ struct Matrix4x4 {
 	void SetT(float x, float y, float z);
 	void SetR_Y(float theta);
 
-	friend Vector3 operator* (const Matrix4x4& m, const Vector3& p);
+	friend Vector4 operator* (const Matrix4x4& m, const Vector4& p);
 	friend Matrix4x4 operator* (const Matrix4x4& a, const Matrix4x4& b);
 
 	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
+		std::cout << "===============>" << name << ": " << "\n";
 		std::cout << "m11: " << m11 << ", m12: " << m12 << ", m13: " << m13 << ", m14: " << m14 << "\n";
 		std::cout << "m21: " << m21 << ", m22: " << m22 << ", m23: " << m23 << ", m24: " << m24 << "\n";
 		std::cout << "m31: " << m31 << ", m32: " << m32 << ", m33: " << m33 << ", m34: " << m34 << "\n";

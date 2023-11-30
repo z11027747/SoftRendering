@@ -1,6 +1,8 @@
 ﻿#ifndef _VECTOR_3_H
 #define _VECTOR_3_H
 
+#include<iostream>
+
 struct Vector2 {
 
 public:
@@ -15,6 +17,11 @@ public:
 	{
 		this->x = x;
 		this->y = y;
+	}
+
+	void Print(const char* name) const {
+		std::cout << name << ": " << "\n";
+		std::cout << "x: " << x << ", y: " << y << "\n";
 	}
 };
 
@@ -34,6 +41,11 @@ public:
 		this->x = x;
 		this->y = y;
 		this->z = z;
+	}
+
+	void Print(const char* name) const {
+		std::cout << name << ": " << "\n";
+		std::cout << "x: " << x << ", y: " << y << ", z: " << z << "\n";
 	}
 };
 
@@ -63,6 +75,21 @@ public:
 		this->y = y;
 		this->z = z;
 		this->w = w;
+	}
+
+	friend Vector4 operator/ (const Vector4& m, float v) {
+		Vector4 result;
+		result.x = m.x / v;
+		result.y = m.y / v;
+		result.z = m.z / v;
+		result.w = m.w / v;
+
+		return result;
+	}
+
+	void Print(const char* name) const {
+		std::cout << name << ": " << "\n";
+		std::cout << "x: " << x << ", y: " << y << ", z: " << z << ", w: " << w << "\n";
 	}
 };
 

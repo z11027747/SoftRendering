@@ -31,12 +31,13 @@ void Matrix4x4::SetR_Y(float radians) {
 	m31 = sin; m33 = cos;
 }
 
-Vector3 operator*(const Matrix4x4& m, const Vector3& p)
+Vector4 operator*(const Matrix4x4& m, const Vector4& p)
 {
-	Vector3 result;
-	result.x = p.x * m.m11 + p.x * m.m21 + p.x * m.m31 + m.m14;
-	result.y = p.y * m.m12 + p.y * m.m22 + p.y * m.m32 + m.m24;
-	result.z = p.z * m.m13 + p.z * m.m23 + p.z * m.m33 + m.m34;
+	Vector4 result;
+	result.x = p.x * m.m11 + p.y * m.m12 + p.z * m.m13 + p.w * m.m14;
+	result.y = p.x * m.m21 + p.y * m.m22 + p.z * m.m23 + p.w * m.m24;
+	result.z = p.x * m.m31 + p.y * m.m32 + p.z * m.m33 + p.w * m.m34;
+	result.w = p.x * m.m41 + p.y * m.m42 + p.z * m.m43 + p.w * m.m44;
 
 	return result;
 }

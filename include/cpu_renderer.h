@@ -27,7 +27,7 @@ public:
 		: w(width), h(height), channels(3)
 	{
 		colorAttachment = new unsigned char[width * height * channels];
-		camera = new Camera(0, 10, width, height);
+		camera = new Camera(0, 10, 5, ((float)width / (float)height));
 	}
 
 	~CPURenderer() {
@@ -43,12 +43,12 @@ public:
 
 		Matrix4x4 matModel;
 		matModel.Identity();
-		matModel.SetT(std::sin(currentTime) * 10, std::cos(currentTime) * 10, 0.0f);
+		//matModel.SetT(std::sin(currentTime), std::cos(currentTime), 0.0f);
 		matModel.SetR_Y((3.14f * 100 * currentTime) / 180);
 
-		//matModel.Print("matModel");
+		matModel.Print("matModel");
 
-		DrawTriangle(Vector3(-20, -20, 5), Vector3(20, -20, 5), Vector3(0, 20, 5),
+		DrawTriangle(Vector3(-2, -2, 2), Vector3(2, -2, 2), Vector3(0, 2, 2),
 			matModel,
 			Color::red);
 	}
@@ -59,25 +59,33 @@ public:
 		const Matrix4x4& matModel, //mat model
 		const Color& color) //color
 	{
+		p1.Print("p1_model");
+
 		//1.坐标转换
+		Vector4 p1_world = (matModel * Vector4(p1, 1.0f));
+		Vector4 p2_world = (matModel * Vector4(p2, 1.0f));
+		Vector4 p3_world = (matModel * Vector4(p3, 1.0f));
+
+		p1_world.Print("p1_world");
+
 		//	暂时没有matView  相机固定远点 视角看z负方向
 		Matrix4x4& matProject = camera->GetMatProject();
 
-		Vector3 p1_world = (matModel * p1);
-		Vector3 p2_world = (matModel * p2);
-		Vector3 p3_world = (matModel * p3);
+		Vector4 p1_project = matProject * p1_world;
+		Vector4 p2_project = matProject * p2_world;
+		Vector4 p3_project = matProject * p3_world;
 
-		//std::cout << "p1_world: " << p1_world.x << ", " << p1_world.y << ", " << p1_world.z << "\n";
+		p1_project.Print("p1_project");
 
-		Vector3 p1_ndc = matProject * p1_world;
-		Vector3 p2_ndc = matProject * p2_world;
-		Vector3 p3_ndc = matProject * p3_world;
+		Vector4 p1_ndc = p1_project / p1_project.w;
+		Vector4 p2_ndc = p2_project / p2_project.w;
+		Vector4 p3_ndc = p3_project / p3_project.w;
 
-		//std::cout << "p1_ndc: " << p1_ndc.x << ", " << p1_ndc.y << ", " << p1_ndc.z << "\n";
+		p1_ndc.Print("p1_ndc");
 
 		//2.视口变化
-		// x [-1,1] -> [0,w] => +1、*w/2
-		// y [-1,1] => [0,h] => +1、*h/2
+		// x [-1,1] -> [0,w-1] => +1、*(w-1)/2
+		// y [-1,1] => [0,h-1] => +1、*(h-1)/2
 		Vector2 p1_view = Vector2(
 			(int)std::round((p1_ndc.x + 1.0f) * ((w - 1) / 2.0f)),
 			(int)std::round((p1_ndc.y + 1.0f) * ((h - 1) / 2.0f)));
@@ -88,7 +96,7 @@ public:
 			(int)std::round((p3_ndc.x + 1.0f) * ((w - 1) / 2.0f)),
 			(int)std::round((p3_ndc.y + 1.0f) * ((h - 1) / 2.0f)));
 
-		// std::cout << "p1_view: " << p1_view.x << "," << p1_view.y << "\n";
+		p1_view.Print("p1_view");
 
 		//3.画线
 		DrawLine(p1_view, p2_view, color);
