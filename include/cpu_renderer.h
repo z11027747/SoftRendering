@@ -29,7 +29,9 @@ public:
 		: w(width), h(height), channels(3)
 	{
 		colorAttachment = new unsigned char[width * height * channels];
-		camera = new Camera(0, 10, 5, ((float)width / (float)height));
+		camera = new Camera(1.0f, 10.0f, ((float)width / (float)height), 2.0f);
+		//camera->SetOrthographicMode(1.0f);
+		camera->SetPerspectiveMode(60.0f);
 	}
 
 	~CPURenderer() {
@@ -112,14 +114,18 @@ public:
 		int trapezoidCount = splitTrapezoids(p1_view, p2_view, p3_view,
 			trapezoid1, trapezoid2);
 
-		//std::cout << "trapezoidCount: " << trapezoidCount;
-		//std::cout << "\n";
+		//std::cout << "trapezoidCount: " << trapezoidCount << "\n";
 
 		if (trapezoidCount == 1) {
+			//trapezoid1.Print("trapezoid1");
+
 			drawTrapezoid(trapezoid1,
 				color);
 		}
 		else if (trapezoidCount == 2) {
+			//trapezoid1.Print("trapezoid1");
+			//trapezoid2.Print("trapezoid2");
+
 			drawTrapezoid(trapezoid1,
 				color);
 			drawTrapezoid(trapezoid2,
