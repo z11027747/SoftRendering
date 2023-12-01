@@ -142,8 +142,8 @@ int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vec
 	//	return 0;
 	//}
 
-	std::cout << "v[0]y: " << vertices[0].y << ", v[1]y: " << vertices[1].y << ", v[2]y: " << vertices[2].y;
-	std::cout << "\n";
+	//std::cout << "v[0]y: " << vertices[0].y << ", v[1]y: " << vertices[1].y << ", v[2]y: " << vertices[2].y;
+	//std::cout << "\n";
 
 	//上平底
 	// 0 1
@@ -175,10 +175,10 @@ int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vec
 	float radio = (float)(vertices[0].y - vertices[1].y) / (float)(vertices[0].y - vertices[2].y);
 	int xmid = vertices[0].x + (int)std::floor(radio * (vertices[2].x - vertices[0].x));
 
-	std::cout << "v[0]x: " << vertices[0].x << ", v[1]x: " << vertices[1].x << ", v[2]x: " << vertices[2].x;
-	std::cout << "\n";
-	std::cout << "xmid: " << xmid;
-	std::cout << "\n";
+	//std::cout << "v[0]x: " << vertices[0].x << ", v[1]x: " << vertices[1].x << ", v[2]x: " << vertices[2].x;
+	//std::cout << "\n";
+	//std::cout << "xmid: " << xmid;
+	//std::cout << "\n";
 
 	//判断左右
 	if (xmid < vertices[1].x) {
