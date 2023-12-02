@@ -2,6 +2,7 @@
 #define _CAMERA_H
 
 #include "all_define.h"
+#include "static_helper.h"
 #include "matrix4x4.h"
 
 class Camera {
@@ -78,7 +79,7 @@ public:
 		// (a*f+b)/f = f   =>  a = n+f
 		// (a*n+b)/n = n 	   b = nf
 
-		float rad = Mathf::Rad2Deg(fieldOfView / 2.0f);
+		float rad = Helper::Rad2Deg(fieldOfView / 2.0f);
 		float size = std::tan(rad) * near;
 
 		//std::cout << "size: " << size;
