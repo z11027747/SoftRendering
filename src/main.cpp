@@ -10,8 +10,6 @@ const unsigned int WIN_HEIGHT = 600;
 unsigned int VBO, VAO;
 void initRenderData();
 
-const unsigned int TEX_WIDTH = WIN_WIDTH;
-const unsigned int TEX_HEIGHT = WIN_HEIGHT;
 unsigned int colorTextureID;
 void initTexture();
 
@@ -37,7 +35,7 @@ int main() {
 	initTexture();
 	initShaderProgram();
 
-	cpuRenderer = new CPURenderer(TEX_WIDTH, TEX_HEIGHT);
+	cpuRenderer = new CPURenderer(WIN_WIDTH, WIN_HEIGHT);
 
 	float deltaTime = 0.0f;
 	float lastTime = 0.0f;
@@ -91,7 +89,7 @@ void initTexture()
 	glGenTextures(1, &colorTextureID);
 	glBindTexture(GL_TEXTURE_2D, colorTextureID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, TEX_WIDTH, TEX_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIN_WIDTH, WIN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -153,7 +151,7 @@ void draw()
 	glUseProgram(shaderProgram);
 
 	glBindTexture(GL_TEXTURE_2D, colorTextureID);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, TEX_WIDTH, TEX_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, cpuRenderer->colorAttachment);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIN_WIDTH, WIN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, cpuRenderer->colorAttachment);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);

@@ -37,9 +37,9 @@ void Matrix4x4::SetS(float x, float y, float z) {
 	m33 *= z;
 }
 
-Vector4 operator*(const Matrix4x4& m, const Vector4& p)
+Vector4<float> operator*(const Matrix4x4& m, const Vector4<float>& p)
 {
-	Vector4 result;
+	Vector4<float> result;
 	result.x = p.x * m.m11 + p.y * m.m12 + p.z * m.m13 + p.w * m.m14;
 	result.y = p.x * m.m21 + p.y * m.m22 + p.z * m.m23 + p.w * m.m24;
 	result.z = p.x * m.m31 + p.y * m.m32 + p.z * m.m33 + p.w * m.m34;

@@ -9,23 +9,24 @@ void CPURenderer::setColor(int x, int y, const Color& color) const {
 	//std::cout << "x: " << x << ", y: " << y;
 	//std::cout << "\n";
 
-	if (x < 0 || x >= w || y < 0 || y >= h)
+	//TODO
+	if (x < 0 || x >= viewport.w || y < 0 || y >= viewport.h)
 		return;
 
-	int index = (x + y * w) * channels;
+	int index = (x + y * viewport.w) * 3;
 	colorAttachment[index + 0] = color.r;
 	colorAttachment[index + 1] = color.g;
 	colorAttachment[index + 2] = color.b;
 }
 
 void CPURenderer::clearColor() {
-	for (int i = 0; i < w * h * channels; i++)
+	for (int i = 0; i < colorLen; i++)
 	{
 		colorAttachment[i] = 0;
 	}
 }
 
-void CPURenderer::bresenmanDrawLine(const Vector2& start, const Vector2& end,
+void CPURenderer::bresenmanDrawLine(const Vector2<int>& start, const Vector2<int>& end,
 	const Color& color) const
 {
 	int x1 = start.x, y1 = start.y;
@@ -64,7 +65,7 @@ int RIGHT = 2;  // 0010
 int BOTTOM = 4; // 0100
 int TOP = 8;    // 1000
 
-bool CPURenderer::cohenSutherlandLineClip(Vector2& v0, Vector2& v1, const Vector2& max) const
+bool CPURenderer::cohenSutherlandLineClip(Vector2<int>& v0, Vector2<int>& v1, const Vector2<int>& max) const
 {
 	int outcode0 = cohenSutherlandLineComputeOutCode(v0, max);
 	int outcode1 = cohenSutherlandLineComputeOutCode(v1, max);
@@ -115,7 +116,7 @@ bool CPURenderer::cohenSutherlandLineClip(Vector2& v0, Vector2& v1, const Vector
 	return accept;
 }
 
-int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2& v, const Vector2& max) const
+int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const
 {
 	int code = INSIDE;
 
@@ -127,13 +128,13 @@ int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2& v, const Vecto
 	return code;
 }
 
-int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vector2& v3,
+int CPURenderer::splitTrapezoids(const Vector2<int>& v1, const Vector2<int>& v2, const Vector2<int>& v3,
 	Trapezoid& trapezoid1, Trapezoid& trapezoid2)  const {
 
 	//y排序
-	std::vector<Vector2> vertices{ v1, v2, v3 };
+	std::vector<Vector2<int>> vertices{ v1, v2, v3 };
 	std::sort(vertices.begin(), vertices.end(),
-		[&](Vector2 lft, Vector2 rhd) -> bool { return lft.y > rhd.y; });
+		[&](Vector2<int> lft, Vector2<int> rhd) -> bool { return lft.y > rhd.y; });
 
 	////共线
 	//if ((vertices[0].x == vertices[1].x && vertices[0].x == vertices[2].x)
@@ -186,13 +187,13 @@ int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vec
 		trapezoid1.bottom = vertices[1].y;
 		trapezoid1.lt = trapezoid1.rt = vertices[0];
 		trapezoid1.ld = vertices[1];
-		trapezoid1.rd = Vector2(xmid, vertices[1].y);
+		trapezoid1.rd = Vector2<int>(xmid, vertices[1].y);
 
 		trapezoid2.top = vertices[1].y;
 		trapezoid2.bottom = vertices[2].y;
 		trapezoid2.ld = trapezoid2.rd = vertices[2];
 		trapezoid2.lt = vertices[1];
-		trapezoid2.rt = Vector2(xmid, vertices[1].y);
+		trapezoid2.rt = Vector2<int>(xmid, vertices[1].y);
 
 		return 2;
 	}
@@ -200,13 +201,13 @@ int CPURenderer::splitTrapezoids(const Vector2& v1, const Vector2& v2, const Vec
 		trapezoid1.top = vertices[0].y;
 		trapezoid1.bottom = vertices[1].y;
 		trapezoid1.lt = trapezoid1.rt = vertices[0];
-		trapezoid1.ld = Vector2(xmid, vertices[1].y);
+		trapezoid1.ld = Vector2<int>(xmid, vertices[1].y);
 		trapezoid1.rd = vertices[1];
 
 		trapezoid2.top = vertices[1].y;
 		trapezoid2.bottom = vertices[2].y;
 		trapezoid2.ld = trapezoid2.rd = vertices[2];
-		trapezoid2.lt = Vector2(xmid, vertices[1].y);
+		trapezoid2.lt = Vector2<int>(xmid, vertices[1].y);
 		trapezoid2.rt = vertices[1];
 
 		return 2;

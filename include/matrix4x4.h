@@ -23,7 +23,7 @@ struct Matrix4x4 {
 	void SetR_Y(float theta);
 	void SetS(float x, float y, float z);
 
-	friend Vector4 operator* (const Matrix4x4& m, const Vector4& p);
+	friend Vector4<float> operator* (const Matrix4x4& m, const Vector4<float>& p);
 	friend Matrix4x4 operator* (const Matrix4x4& a, const Matrix4x4& b);
 
 	void Print(const char* name) const {
