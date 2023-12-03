@@ -116,8 +116,8 @@ bool CPURenderer::cohenSutherlandLineClip(Vector2<int>& v0, Vector2<int>& v1, co
 	return accept;
 }
 
-int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const
-{
+int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const {
+
 	int code = INSIDE;
 
 	if (v.x < 0) code |= LEFT;
@@ -128,9 +128,12 @@ int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const 
 	return code;
 }
 
-int CPURenderer::splitTrapezoids(std::vector<Vertex> vertices, Trapezoid* trapezoids)  const {
-
+int CPURenderer::splitTrapezoids(
+	const Vertex& v1, const Vertex& v2, const Vertex& v3,
+	Trapezoid* trapezoids)  const
+{
 	//y排序
+	std::vector<Vertex> vertices = { v1, v2, v3 };
 	std::sort(vertices.begin(), vertices.end(),
 		[&](Vertex lft, Vertex rhd) -> bool { return lft.position.y > rhd.position.y; });
 
@@ -234,7 +237,10 @@ void CPURenderer::drawTrapezoid(const Trapezoid& trapezoid) const
 			//curr.position.Print("curr.position");
 			//std::cout << "\n";
 
-			setColor((int)curr.position.x, yt, curr.color);
+			//采样贴图
+			Color texCol = texture.Tex(curr.uv);
+
+			setColor((int)curr.position.x, yt, texCol);
 		}
 
 		yt -= 1;

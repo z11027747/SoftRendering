@@ -23,6 +23,9 @@ public:
 	unsigned char* colorAttachment;
 	unsigned int colorLen;
 
+	//贴图
+	Texture texture;
+
 	//相机
 	Camera camera;
 
@@ -36,6 +39,8 @@ public:
 		camera = Camera(1.0f, 10.0f, ((float)w / (float)h), 2.0f);
 		//camera.SetOrthographicMode(1.0f);
 		camera.SetPerspectiveMode(60.0f);
+
+		texture = Helper::LoadImage("ColoredNumberAtlas.png");
 	}
 
 	~CPURenderer() {
@@ -51,13 +56,19 @@ public:
 		Matrix4x4 matModel;
 		matModel.Identity();
 		matModel.SetT(0.0f, 0.0f, 5.0f);
-		matModel.SetR_Y(Helper::Rad2Deg(currentTime * 100.0f));
+		matModel.SetR_Y(Helper::Rad2Deg(currentTime * 50.0f));
 		//matModel.Print("matModel");
 
 		std::vector<Vertex> vertices = {
-			Vertex(Vector3<float>(-3,-3,2), Color(255,0,0)),
-			Vertex(Vector3<float>(2,0,2), Color(0,255,0)),
-			Vertex(Vector3<float>(0,3,2), Color(0,0,255))
+			// position           ---           color           ---           uv
+			//1
+			Vertex(Vector3<float>(-2, -2, 2), Color(255, 0, 0), Vector2<float>(0.0f, 0.0f)),
+			Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
+			Vertex(Vector3<float>(2, -2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 0.0f)),
+			//2
+			Vertex(Vector3<float>(-2, 2, 2), Color(255, 0, 0), Vector2<float>(0.0f, 1.0f)),
+			Vertex(Vector3<float>(2, 2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 1.0f)),
+			Vertex(Vector3<float>(2, -2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 0.0f))
 		};
 		DrawTriangle(vertices,
 			matModel);
@@ -69,7 +80,6 @@ public:
 		//m变化
 		for (auto& vertex : vertices) {
 			vertex.position = matModel * vertex.position;
-
 			//vertex.position.Print("vertex.position===>Model");
 		}
 
@@ -79,7 +89,6 @@ public:
 		Matrix4x4& matProject = camera.GetMatProject();
 		for (auto& vertex : vertices) {
 			vertex.position = matProject * vertex.position;
-
 			//vertex.position.Print("vertex.position===>Project");
 		}
 
@@ -88,23 +97,26 @@ public:
 			vertex.position.x /= vertex.position.w;
 			vertex.position.y /= vertex.position.w;
 			vertex.position.w = 1.0f;
-
 			//vertex.position.Print("vertex.position===>PerspectiveDivice");
 		}
+
+		//TODO 透视校正
 
 		//视口变化
 		for (auto& vertex : vertices) {
 			vertex.position.x = (vertex.position.x + 1.0f) * ((viewport.w - 1) / 2.0f);
 			vertex.position.y = (vertex.position.y + 1.0f) * ((viewport.h - 1) / 2.0f);
-
 			//vertex.position.Print("vertex.position===>ViewPort");
 		}
 
 		//光栅化三角形
-		Trapezoid trapezoids[2];
-		int trapezoidCount = splitTrapezoids(vertices, trapezoids);
-		for (int i = 0; i < trapezoidCount; i++) {
-			drawTrapezoid(trapezoids[i]);
+		for (int i = 0; i < vertices.size(); i += 3) {
+			Trapezoid trapezoids[2];
+			int trapezoidCount = splitTrapezoids(vertices[i], vertices[i + 1], vertices[i + 2],
+				trapezoids);
+			for (int i = 0; i < trapezoidCount; i++) {
+				drawTrapezoid(trapezoids[i]);
+			}
 		}
 	}
 
@@ -133,7 +145,8 @@ private:
 	int cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const;
 
 	//trapezoid划分
-	int splitTrapezoids(std::vector<Vertex> vertices, Trapezoid* trapezoids) const;
+	int splitTrapezoids(const Vertex& v1, const Vertex& v2, const Vertex& v3,
+		Trapezoid* trapezoids) const;
 	void drawTrapezoid(const Trapezoid& trapezoidr) const;
 
 	//scanline扫描线
