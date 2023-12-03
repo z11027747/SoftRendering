@@ -56,7 +56,7 @@ public:
 		Matrix4x4 matModel;
 		matModel.Identity();
 		matModel.SetT(0.0f, 0.0f, 5.0f);
-		//matModel.SetR_Y(Helper::Rad2Deg(currentTime * 50.0f));
+		matModel.SetR_Y(Helper::Rad2Deg(currentTime * 100.0f));
 		//matModel.Print("matModel");
 
 		std::vector<Vertex> vertices = {
@@ -66,9 +66,9 @@ public:
 			Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
 			Vertex(Vector3<float>(2, -2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 0.0f)),
 			//2
-			//Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
-			//Vertex(Vector3<float>(2, 2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 1.0f)),
-			//Vertex(Vector3<float>(2, -2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 0.0f))
+			Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
+			Vertex(Vector3<float>(2, 2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 1.0f)),
+			Vertex(Vector3<float>(2, -2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 0.0f))
 		};
 		DrawTriangle(vertices,
 			matModel);
@@ -154,7 +154,7 @@ private:
 	void drawTrapezoid(Trapezoid& trapezoid) const;
 
 	//scanline扫描线
-	Scanline genScanline(Trapezoid& trapezoid, float y) const;
+	Scanline genScanline(const Trapezoid& trapezoid, float y) const;
 
 };
 

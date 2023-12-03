@@ -46,13 +46,15 @@ public:
 		return result;
 	}
 
+	// 1 2 3 1
+	// 1/3 2/3 1/3 1
+	// 1 2 3 1
 	Vertex Correction() const {
 		float z = position.z;
 
 		Vertex result;
-		result.position = position / z;
+		result.position = position;
 		result.position.z = 1 / z;
-		result.position.w = 1.0f;
 		result.color = color / z;
 		result.uv = uv / z;
 
@@ -61,9 +63,9 @@ public:
 
 	void Print(const char* name) const {
 		std::cout << name << ": " << "\n";
-		position.Print("Vertex-position");
-		color.Print("Vertex-color");
-		uv.Print("Vertex-uv");
+		position.Print("	Vertex-position");
+		color.Print("	Vertex-color");
+		uv.Print("	Vertex-uv");
 	}
 };
 
@@ -99,7 +101,6 @@ struct Trapezoid {
 struct Scanline {
 	Vertex left;
 	Vertex right;
-	int width;
 };
 
 

@@ -27,7 +27,7 @@ struct Vector2 {
 	}
 
 	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
+		std::cout << name << ": ";
 		std::cout << "x: " << x << ", y: " << y << "\n";
 	}
 };
@@ -51,7 +51,7 @@ struct Vector3 {
 	}
 
 	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
+		std::cout << name << ": ";
 		std::cout << "x: " << x << ", y: " << y << ", z: " << z << "\n";
 	}
 };
@@ -95,7 +95,7 @@ struct Vector4 {
 	}
 
 	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
+		std::cout << name << ": ";
 		std::cout << "x: " << x << ", y: " << y << ", z: " << z << ", w: " << w << "\n";
 	}
 };

@@ -1,4 +1,4 @@
-#ifndef _CAMERA_H
+﻿#ifndef _CAMERA_H
 #define _CAMERA_H
 
 #include "all_define.h"
