@@ -18,6 +18,8 @@ struct Viewport {
 
 //顶点
 struct Vertex {
+
+public:
 	Vector4<float> position;
 	Color color;
 	Vector2<float> uv;
@@ -30,9 +32,38 @@ struct Vertex {
 	{
 	}
 
-	Vertex(Vector4<float> p, Color c)
-		: position(p), color(c)
+	Vertex(Vector4<float> p, Color c, Vector2<float> u)
+		: position(p), color(c), uv(u)
 	{
+	}
+
+	friend Vertex operator/ (const Vertex& m, float v) {
+		Vertex result;
+		result.position = m.position / v;
+		result.color = m.color / v;
+		result.uv = m.uv / v;
+
+		return result;
+	}
+
+	Vertex Correction() const {
+		float z = position.z;
+
+		Vertex result;
+		result.position = position / z;
+		result.position.z = 1 / z;
+		result.position.w = 1.0f;
+		result.color = color / z;
+		result.uv = uv / z;
+
+		return result;
+	}
+
+	void Print(const char* name) const {
+		std::cout << name << ": " << "\n";
+		position.Print("Vertex-position");
+		color.Print("Vertex-color");
+		uv.Print("Vertex-uv");
 	}
 };
 
@@ -48,6 +79,9 @@ public:
 		//Point
 		// uv:0.0-1.0
 		int index = ((int)(uv.x * w) + (int)(uv.y * h) * w) * c;
+
+		//uv.Print("uv");
+
 		Color result(data[index + 0], data[index + 1], data[index + 2]);
 		return result;
 	}
@@ -65,7 +99,7 @@ struct Trapezoid {
 struct Scanline {
 	Vertex left;
 	Vertex right;
-	float step;
+	int width;
 };
 
 

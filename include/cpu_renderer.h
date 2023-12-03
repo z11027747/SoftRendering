@@ -56,7 +56,7 @@ public:
 		Matrix4x4 matModel;
 		matModel.Identity();
 		matModel.SetT(0.0f, 0.0f, 5.0f);
-		matModel.SetR_Y(Helper::Rad2Deg(currentTime * 50.0f));
+		//matModel.SetR_Y(Helper::Rad2Deg(currentTime * 50.0f));
 		//matModel.Print("matModel");
 
 		std::vector<Vertex> vertices = {
@@ -64,11 +64,11 @@ public:
 			//1
 			Vertex(Vector3<float>(-2, -2, 2), Color(255, 0, 0), Vector2<float>(0.0f, 0.0f)),
 			Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(2, -2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 0.0f)),
+			Vertex(Vector3<float>(2, -2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 0.0f)),
 			//2
-			Vertex(Vector3<float>(-2, 2, 2), Color(255, 0, 0), Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(2, 2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(2, -2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 0.0f))
+			//Vertex(Vector3<float>(-2, 2, 2), Color(0, 255, 0), Vector2<float>(0.0f, 1.0f)),
+			//Vertex(Vector3<float>(2, 2, 2), Color(0, 0, 255), Vector2<float>(1.0f, 1.0f)),
+			//Vertex(Vector3<float>(2, -2, 2), Color(0, 255, 0), Vector2<float>(1.0f, 0.0f))
 		};
 		DrawTriangle(vertices,
 			matModel);
@@ -92,6 +92,12 @@ public:
 			//vertex.position.Print("vertex.position===>Project");
 		}
 
+		//还原z
+		for (auto& vertex : vertices) {
+			vertex.position.z = vertex.position.w;
+			//vertex.position.Print("vertex.position===>RevertZ");
+		}
+
 		//透视除法
 		for (auto& vertex : vertices) {
 			vertex.position.x /= vertex.position.w;
@@ -99,8 +105,6 @@ public:
 			vertex.position.w = 1.0f;
 			//vertex.position.Print("vertex.position===>PerspectiveDivice");
 		}
-
-		//TODO 透视校正
 
 		//视口变化
 		for (auto& vertex : vertices) {
@@ -112,7 +116,7 @@ public:
 		//光栅化三角形
 		for (int i = 0; i < vertices.size(); i += 3) {
 			Trapezoid trapezoids[2];
-			int trapezoidCount = splitTrapezoids(vertices[i], vertices[i + 1], vertices[i + 2],
+			int trapezoidCount = splitTrapezoids(vertices[i + 0], vertices[i + 1], vertices[i + 2],
 				trapezoids);
 			for (int i = 0; i < trapezoidCount; i++) {
 				drawTrapezoid(trapezoids[i]);
@@ -147,10 +151,10 @@ private:
 	//trapezoid划分
 	int splitTrapezoids(const Vertex& v1, const Vertex& v2, const Vertex& v3,
 		Trapezoid* trapezoids) const;
-	void drawTrapezoid(const Trapezoid& trapezoidr) const;
+	void drawTrapezoid(Trapezoid& trapezoid) const;
 
 	//scanline扫描线
-	Scanline genScanline(const Trapezoid& trapezoid, int y) const;
+	Scanline genScanline(Trapezoid& trapezoid, float y) const;
 
 };
 

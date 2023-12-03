@@ -40,11 +40,13 @@ public:
 	}
 
 	template <typename U>
-	static Vector4<U> Lerp4_XY(const Vector4<U>& l, const Vector4<U>& r, float t) {
+	static Vector4<U> Lerp4(const Vector4<U>& l, const Vector4<U>& r, float t) {
 
 		Vector4<U> result;
 		result.x = Lerp(l.x, r.x, t);
 		result.y = Lerp(l.y, r.y, t);
+		result.z = Lerp(l.z, r.z, t);
+		result.w = Lerp(l.w, r.w, t);
 		return result;
 	}
 
@@ -60,7 +62,7 @@ public:
 	static Vertex LerpVertex(const Vertex& l, const Vertex& r, float t) {
 
 		Vertex result;
-		result.position = Lerp4_XY(l.position, r.position, t);
+		result.position = Lerp4(l.position, r.position, t);
 		result.color = LerpColor(l.color, r.color, t);
 		result.uv = Lerp2(l.uv, r.uv, t);
 		return result;
@@ -73,12 +75,8 @@ public:
 		int w, h, c;
 		unsigned char* data = stbi_load(name, &w, &h, &c, 0);
 
-		if (!data) {
-			std::cout << "LoadImage Failed!!! \n";
-		}
-
-		std::cout << " LoadImage  =======================> ";
-		std::cout << "w: " << w << ", h: " << h << ", c: " << c << "\n";
+		//std::cout << " LoadImage  =======================> ";
+		//std::cout << "w: " << w << ", h: " << h << ", c: " << c << "\n";
 
 		Texture result;
 		result.w = w;

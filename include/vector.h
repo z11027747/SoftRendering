@@ -18,8 +18,17 @@ struct Vector2 {
 		this->y = y;
 	}
 
+	friend Vector2<T> operator/ (const Vector2<T>& m, float v) {
+		Vector2<T> result;
+		result.x = m.x / v;
+		result.y = m.y / v;
+
+		return result;
+	}
+
 	void Print(const char* name) const {
-		std::cout << name << ": " << "x: " << x << ", y: " << y << "\n";
+		std::cout << name << ": " << "\n";
+		std::cout << "x: " << x << ", y: " << y << "\n";
 	}
 };
 
