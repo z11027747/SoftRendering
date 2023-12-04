@@ -1,3 +1,5 @@
+[![Language](https://img.shields.io/badge/language-C++-blue.svg)](https://www.cplusplus.com/)
+
 # 基于CPU的光栅化渲染器
 
 使用OpenGL的Texture做屏幕输出，其余都是用CPU计算的
