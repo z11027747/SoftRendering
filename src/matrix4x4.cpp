@@ -22,13 +22,22 @@ void Matrix4x4::SetT(float x, float y, float z) {
 	m34 = z;
 }
 
+void Matrix4x4::SetR_X(float radians) {
+
+	float sin = std::sin(radians);
+	float cos = std::cos(radians);
+
+	m22 = cos; m23 = -sin;
+	m32 = sin; m33 = cos;
+}
+
 void Matrix4x4::SetR_Y(float radians) {
 
 	float sin = std::sin(radians);
 	float cos = std::cos(radians);
 
-	m11 = cos; m13 = -sin;
-	m31 = sin; m33 = cos;
+	m11 = cos; m13 = sin;
+	m31 = -sin; m33 = cos;
 }
 
 void Matrix4x4::SetS(float x, float y, float z) {

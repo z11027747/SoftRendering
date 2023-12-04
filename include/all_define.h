@@ -3,6 +3,7 @@
 
 #include "vector.h"
 
+//视口
 struct Viewport {
 	int x, y;
 	int w, h;
@@ -19,7 +20,6 @@ struct Viewport {
 //顶点
 struct Vertex {
 
-public:
 	Vector4<float> position;
 	Color color;
 	Vector2<float> uv;
@@ -81,9 +81,6 @@ public:
 		//Point
 		// uv:0.0-1.0
 		int index = ((int)(uv.x * w) + (int)(uv.y * h) * w) * c;
-
-		//uv.Print("uv");
-
 		Color result(data[index + 0], data[index + 1], data[index + 2]);
 		return result;
 	}

@@ -28,7 +28,7 @@ void CPURenderer::clearColor() {
 void CPURenderer::clearDepth() {
 	for (int i = 0; i < depthLen; i++)
 	{
-		depthAttachment[i] = camera.far;
+		depthAttachment[i] = camera.frustum.far;
 	}
 }
 void CPURenderer::setDepth(int x, int y, float z) const {
@@ -294,30 +294,33 @@ Scanline CPURenderer::genScanline(const Trapezoid& trapezoid, float y) const {
 	return scanline;
 }
 
-bool CPURenderer::needCullFace(const Vertex& v1, const Vertex& v2, const Vertex& v3, 
-	const Vector3<float>& dirView) const 
+bool CPURenderer::needCullFace(const Vertex& v1, const Vertex& v2, const Vertex& v3,
+	const Vector3<float>& dirView) const
 {
+	//逆时针为正面
 	//v1 v2
 	//	v3
+	Vector3<float> dir21(
+		v2.position.x - v1.position.x,
+		v2.position.y - v1.position.y,
+		v2.position.z - v1.position.z
+	);
+	Vector3<float> dir32(
+		v3.position.x - v2.position.x,
+		v3.position.y - v2.position.y,
+		v3.position.z - v2.position.z
+	);
 
-	Vector3<float> dir21;
-	dir21.x = v2.position.x - v1.position.x;
-	dir21.y = v2.position.y - v1.position.y;
-	dir21.z = v2.position.z - v1.position.z;
+	Vector3<float> crossValue = dir21.Cross(dir32);
+	float dotValue = crossValue.Dot(dirView);
 
-	Vector3<float> dir32;
-	dir32.x = v3.position.x - v2.position.x;
-	dir32.y = v3.position.y - v2.position.y;
-	dir32.z = v3.position.z - v2.position.z;
+	//std::cout << "needCullFace =============> \n";
+	//v1.position.Print("v1");
+	//v2.position.Print("v2");
+	//v3.position.Print("v3");
+	//std::cout << "crossValue: " << crossValue.x << ", " << crossValue.y << ", " << crossValue.z << "\n";
+	//std::cout << "dotValue: " << dotValue << "\n";
 
-	//叉乘求面方向
-	Vector3<float> crossValue;
-	crossValue.x = (dir21.y * dir32.z) - (dir21.z * dir32.y);
-	crossValue.y = (dir21.z * dir32.x) - (dir21.x * dir32.z);
-	crossValue.z = (dir21.x * dir32.y) - (dir21.y * dir32.x);
-
-	//点乘求和view方向
-	float dotValue = (crossValue.x, dirView.x) + (crossValue.y, dirView.y) + (crossValue.z, dirView.z);
-
-	return dotValue > 0;
+	//和视野反向是正面
+	return dotValue <= 0.0f;
 }

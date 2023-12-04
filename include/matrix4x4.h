@@ -20,6 +20,7 @@ struct Matrix4x4 {
 	void Identity();
 
 	void SetT(float x, float y, float z);
+	void SetR_X(float theta);
 	void SetR_Y(float theta);
 	void SetS(float x, float y, float z);
 

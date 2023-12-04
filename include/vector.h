@@ -1,7 +1,8 @@
 ﻿#ifndef _VECTOR_3_H
 #define _VECTOR_3_H
 
-#include<iostream>
+#include <iostream>
+#include <math.h>
 
 template <typename T>
 struct Vector2 {
@@ -48,6 +49,33 @@ struct Vector3 {
 		this->x = x;
 		this->y = y;
 		this->z = z;
+	}
+
+	Vector3<T>& Normalize() {
+
+		float len = (x * x) + (y * y) + (z * z);
+		float ooLen = 1.0f / std::sqrt(len);
+
+		x *= ooLen;
+		y *= ooLen;
+		z *= ooLen;
+
+		return *this;
+	}
+
+	Vector3<T> Cross(const Vector3<T>& m) const {
+		Vector3<float> crossValue;
+		crossValue.x = (y * m.z) - (z * m.y);
+		crossValue.y = (z * m.x) - (x * m.z);
+		crossValue.z = (x * m.y) - (y * m.x);
+
+		return crossValue;
+	}
+
+	float Dot(const Vector3<T>& m) const {
+		float dotValue = (x * m.x) + (y * m.y) + (z * m.z);
+
+		return dotValue;
 	}
 
 	void Print(const char* name) const {

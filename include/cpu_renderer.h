@@ -43,8 +43,8 @@ public:
 		depthLen = depthLen = w * h;
 		depthAttachment = new float[depthLen];
 
-		camera = Camera(1.0f, 10.0f, ((float)w / (float)h), 2.0f);
-		//camera.SetOrthographicMode(1.0f);
+		camera = Camera(1.0f, 10.0f, ((float)w / (float)h));
+		//camera.SetOrthographicMode(2.0f);
 		camera.SetPerspectiveMode(30.0f);
 
 		texture = Helper::LoadImage("ColoredNumberAtlas.png");
@@ -62,110 +62,123 @@ public:
 
 		//std::cout << "===========================> RenderBegin \n";
 
-		Matrix4x4 matModel;
-		matModel.Identity();
-		matModel.SetT(0.0f, 0.0f, 5.0f);
-		matModel.SetR_Y(Helper::Rad2Deg(currentTime * 100.0f));
 		//matModel.Print("matModel");
 
 		//Cube
 		std::vector<Vertex> vertices = {
 			// position                  ---                  color      ---        uv
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  -0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,   0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,   0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f,  0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 0.0f)),
+			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::green, Vector2<float>(0.0f, 0.0f)),//0
+			Vertex(Vector3<float>(0.5f, 0.5f, 1.5f),   Color::green, Vector2<float>(0.0f, 1.0f)),//2
+			Vertex(Vector3<float>(-0.5f, 0.5f, 1.5f),  Color::green, Vector2<float>(1.0f, 1.0f)),//3
+			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::green, Vector2<float>(0.0f, 0.0f)),//0
+			Vertex(Vector3<float>(-0.5f, 0.5f, 1.5f),  Color::green, Vector2<float>(1.0f, 1.0f)),//3
+			Vertex(Vector3<float>(-0.5f, -0.5f, 1.5f), Color::green, Vector2<float>(1.0f, 0.0f)),//1
 
-			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  -0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,   0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,   0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f,  0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 0.0f)),
+			Vertex(Vector3<float>(0.5f, 0.5f, 1.5f),   Color::red, Vector2<float>(0.0f, 0.0f)),//8
+			Vertex(Vector3<float>(0.5f, 0.5f, 0.5f),   Color::red, Vector2<float>(0.0f, 1.0f)),//4
+			Vertex(Vector3<float>(-0.5f, 0.5f, 0.5f),  Color::red, Vector2<float>(1.0f, 1.0f)),//5
+			Vertex(Vector3<float>(0.5f, 0.5f, 1.5f),   Color::red, Vector2<float>(0.0f, 0.0f)),//8
+			Vertex(Vector3<float>(-0.5f, 0.5f, 0.5f),  Color::red, Vector2<float>(1.0f, 1.0f)),//5
+			Vertex(Vector3<float>(-0.5f, 0.5f, 1.5f),  Color::red, Vector2<float>(1.0f, 0.0f)),//9
 
-			Vertex(Vector3<float>(-0.5f,  0.5f,  0.5f), Color(0, 0, 255),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f,  0.5f, -0.5f), Color(0, 0, 255),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f), Color(0, 0, 255),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f), Color(0, 0, 255),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f,  0.5f), Color(0, 0, 255),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f,  0.5f,  0.5f), Color(0, 0, 255),  Vector2<float>(1.0f, 0.0f)),
+			Vertex(Vector3<float>(0.5f, 0.5f, 0.5f),   Color::white, Vector2<float>(0.0f, 0.0f)),//10
+			Vertex(Vector3<float>(0.5f, -0.5f, 0.5f),  Color::white, Vector2<float>(0.0f, 1.0f)),//6
+			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f), Color::white, Vector2<float>(1.0f, 1.0f)),//7
+			Vertex(Vector3<float>(0.5f, 0.5f, 0.5f),   Color::white, Vector2<float>(0.0f, 0.0f)),//10
+			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f), Color::white, Vector2<float>(1.0f, 1.0f)),//7
+			Vertex(Vector3<float>(-0.5f, 0.5f, 0.5f),  Color::white, Vector2<float>(1.0f, 0.0f)),//11
 
-			Vertex(Vector3<float>(0.5f,  0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f, -0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f, -0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f, -0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 0.0f)),
+			Vertex(Vector3<float>(0.5f, -0.5f, 0.5f),  Color::red, Vector2<float>(0.0f, 0.0f)),//12
+			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::red, Vector2<float>(0.0f, 1.0f)),//13
+			Vertex(Vector3<float>(-0.5f, -0.5f, 1.5f), Color::red, Vector2<float>(1.0f, 1.0f)),//14
+			Vertex(Vector3<float>(0.5f, -0.5f, 0.5f),  Color::red, Vector2<float>(0.0f, 0.0f)),//12
+			Vertex(Vector3<float>(-0.5f, -0.5f, 1.5f), Color::red, Vector2<float>(1.0f, 1.0f)),//14
+			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f), Color::red, Vector2<float>(1.0f, 0.0f)),//15
 
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,  -0.5f, -0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,  -0.5f,  0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  -0.5f,  0.5f),  Color(0, 255, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f,  0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f, -0.5f, -0.5f),  Color(0, 255, 0),  Vector2<float>(0.0f, 1.0f)),
+			Vertex(Vector3<float>(-0.5f, -0.5f, 1.5f), Color::blue, Vector2<float>(0.0f, 0.0f)),//16
+			Vertex(Vector3<float>(-0.5f, 0.5f, 1.5f),  Color::blue, Vector2<float>(0.0f, 1.0f)),//17
+			Vertex(Vector3<float>(-0.5f, 0.5f, 0.5f),  Color::blue, Vector2<float>(1.0f, 1.0f)),//18
+			Vertex(Vector3<float>(-0.5f, -0.5f, 1.5f), Color::blue, Vector2<float>(0.0f, 0.0f)),//16
+			Vertex(Vector3<float>(-0.5f, 0.5f, 0.5f),  Color::blue, Vector2<float>(1.0f, 1.0f)),//18
+			Vertex(Vector3<float>(-0.5f, -0.5f, 0.5f), Color::blue, Vector2<float>(1.0f, 0.0f)),//19
 
-			Vertex(Vector3<float>(-0.5f, 0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,  0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 1.0f)),
-			Vertex(Vector3<float>(0.5f,  0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(0.5f,  0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(1.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f, 0.5f,  0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 0.0f)),
-			Vertex(Vector3<float>(-0.5f, 0.5f, -0.5f),  Color(255, 0, 0),  Vector2<float>(0.0f, 1.0f))
+			Vertex(Vector3<float>(0.5f, -0.5f, 0.5f),  Color::green, Vector2<float>(0.0f, 0.0f)),//20
+			Vertex(Vector3<float>(0.5f, 0.5f, 0.5f),   Color::green, Vector2<float>(0.0f, 1.0f)),//21
+			Vertex(Vector3<float>(0.5f, 0.5f, 1.5f),   Color::green, Vector2<float>(1.0f, 1.0f)),//22
+			Vertex(Vector3<float>(0.5f, -0.5f, 0.5f),  Color::green, Vector2<float>(0.0f, 0.0f)),//20
+			Vertex(Vector3<float>(0.5f, 0.5f, 1.5f),   Color::green, Vector2<float>(1.0f, 1.0f)),//22
+			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::green, Vector2<float>(1.0f, 0.0f)),//23
 		};
 
+		Matrix4x4 matModel1;
+		matModel1.Identity();
+		matModel1.SetT(2.0f, 0.0f, 5.0f);
+		matModel1.SetR_Y(Helper::Rad2Deg(currentTime * 100.0f));
+		DrawArrays(vertices, matModel1);
+
+		Matrix4x4 matModel2;
+		matModel2.Identity();
+		matModel2.SetT(0.0f, 0.0f, 5.0f);
+		matModel2.SetR_X(Helper::Rad2Deg(30.0f));
+		DrawArrays(vertices, matModel2);
+	}
+
+	void DrawArrays(std::vector<Vertex> vertices, const Matrix4x4& matModel)
+	{
 		for (int i = 0; i < vertices.size(); i += 3) {
-			DrawTriangle(vertices[i + 0], vertices[i + 1], vertices[i + 2],
+			std::vector<Vertex> v3 = { vertices[i + 0], vertices[i + 1], vertices[i + 2] };
+			DrawTriangle(v3,
 				matModel);
 		}
 	}
 
-	void DrawTriangle(Vertex& v1, Vertex& v2, Vertex& v3,
+	void DrawTriangle(std::vector<Vertex>& v3,
 		const Matrix4x4& matModel)//mat model
 	{
 		//m变化
-		v1.position = matModel * v1.position;
-		v2.position = matModel * v2.position;
-		v3.position = matModel * v3.position;
+		for (auto& v : v3) {
+			v.position = matModel * v.position;
+		}
 
-		//背面剔除 索引逆时针为正面
-		if (!needCullFace(v1, v2, v3, Vector3<float>(0, 0, 1))) {
+		//视锥剔除
+		if (!camera.frustum.Contains(v3[0].position)
+			&& !camera.frustum.Contains(v3[1].position)
+			&& !camera.frustum.Contains(v3[2].position)) {
 			return;
 		}
 
 		//p变化
-		Matrix4x4& matProject = camera.GetMatProject();
-		v1.position = matProject * v1.position;
-		v2.position = matProject * v2.position;
-		v3.position = matProject * v3.position;
+		for (auto& v : v3) {
+			v.position = camera.matProject * v.position;
+		}
 
 		//还原z
-		v1.position.z = v1.position.w;
-		v2.position.z = v2.position.w;
-		v3.position.z = v3.position.w;
+		for (auto& v : v3) {
+			v.position.z = v.position.w;
+		}
 
 		//透视除法
-		v1.position.x /= v1.position.w;
-		v1.position.y /= v1.position.w;
-		v1.position.w = 1.0f;
-		v2.position.x /= v2.position.w;
-		v2.position.y /= v2.position.w;
-		v2.position.w = 1.0f;
-		v3.position.x /= v3.position.w;
-		v3.position.y /= v3.position.w;
-		v3.position.w = 1.0f;
+		for (auto& v : v3) {
+			v.position.x /= v.position.w;
+			v.position.y /= v.position.w;
+			v.position.w = 1.0f;
+		}
+
+		//背面剔除
+		if (!needCullFace(v3[0], v3[1], v3[2],
+			Vector3<float>(0, 0, 1))) {
+			return;
+		}
 
 		//视口变化
-		v1.position.x = (v1.position.x + 1.0f) * ((viewport.w - 1) / 2.0f);
-		v1.position.y = (v1.position.y + 1.0f) * ((viewport.h - 1) / 2.0f);
-		v2.position.x = (v2.position.x + 1.0f) * ((viewport.w - 1) / 2.0f);
-		v2.position.y = (v2.position.y + 1.0f) * ((viewport.h - 1) / 2.0f);
-		v3.position.x = (v3.position.x + 1.0f) * ((viewport.w - 1) / 2.0f);
-		v3.position.y = (v3.position.y + 1.0f) * ((viewport.h - 1) / 2.0f);
+		for (auto& v : v3) {
+			v.position.x = (v.position.x + 1.0f) * ((viewport.w - 1) / 2.0f);
+			v.position.y = (v.position.y + 1.0f) * ((viewport.h - 1) / 2.0f);
+		}
 
 		//填色
 		Trapezoid trapezoids[2];
-		int trapezoidCount = splitTrapezoids(v1, v2, v3,
+		int trapezoidCount = splitTrapezoids(v3[0], v3[1], v3[2],
 			trapezoids);
 		for (int i = 0; i < trapezoidCount; i++) {
 			drawTrapezoid(trapezoids[i]);
@@ -209,7 +222,7 @@ private:
 	//scanline扫描线
 	Scanline genScanline(const Trapezoid& trapezoid, float y) const;
 
-	//背面剔除 索引顺时针
+	//背面剔除
 	bool needCullFace(const Vertex& v1, const Vertex& v2, const Vertex& v3,
 		const Vector3<float>& dirView) const;
 

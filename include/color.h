@@ -38,9 +38,9 @@ struct Color {
 	friend Color operator* (const Color& l, const Color& r) {
 
 		Color result;
-		result.r = (unsigned char)((l.r * r.r) / 255);
-		result.g = (unsigned char)((l.g * r.g) / 255);
-		result.b = (unsigned char)((l.b * r.b) / 255);
+		result.r = (l.r * r.r) / 255;
+		result.g = (l.g * r.g) / 255;
+		result.b = (l.b * r.b) / 255;
 
 		return result;
 	}
