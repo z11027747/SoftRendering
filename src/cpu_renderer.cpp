@@ -9,8 +9,8 @@ void CPURenderer::setColor(int x, int y, const Color& color) const {
 	//std::cout << "x: " << x << ", y: " << y;
 	//std::cout << "\n";
 
-	//TODO
-	if (x < 0 || x >= viewport.w || y < 0 || y >= viewport.h)
+	if (x < viewport.x || x >= viewport.x + viewport.w
+		|| y < viewport.y || y >= viewport.y + viewport.h)
 		return;
 
 	int index = (x + y * viewport.w) * 3;
@@ -18,12 +18,35 @@ void CPURenderer::setColor(int x, int y, const Color& color) const {
 	colorAttachment[index + 1] = color.g;
 	colorAttachment[index + 2] = color.b;
 }
-
 void CPURenderer::clearColor() {
 	for (int i = 0; i < colorLen; i++)
 	{
 		colorAttachment[i] = 0;
 	}
+}
+
+void CPURenderer::clearDepth() {
+	for (int i = 0; i < depthLen; i++)
+	{
+		depthAttachment[i] = camera.far;
+	}
+}
+void CPURenderer::setDepth(int x, int y, float z) const {
+
+	if (x < viewport.x || x >= viewport.x + viewport.w
+		|| y < viewport.y || y >= viewport.y + viewport.h)
+		return;
+
+	int index = (x + y * viewport.w);
+	depthAttachment[index] = z;
+}
+float CPURenderer::getDepth(int x, int y) const {
+	if (x < viewport.x || x >= viewport.x + viewport.w
+		|| y < viewport.y || y >= viewport.y + viewport.h)
+		return 0;
+
+	int index = (x + y * viewport.w);
+	return depthAttachment[index];
 }
 
 void CPURenderer::bresenmanDrawLine(const Vector2<int>& start, const Vector2<int>& end,
@@ -137,9 +160,6 @@ int CPURenderer::splitTrapezoids(
 	std::sort(vertices.begin(), vertices.end(),
 		[&](Vertex lft, Vertex rhd) -> bool { return lft.position.y > rhd.position.y; });
 
-	//std::cout << "v[0]y: " << vertices[0].y << ", v[1]y: " << vertices[1].y << ", v[2]y: " << vertices[2].y;
-	//std::cout << "\n";
-
 	//上平底
 	if (vertices[0].position.y == vertices[1].position.y) {
 		// 0 1
@@ -184,14 +204,6 @@ int CPURenderer::splitTrapezoids(
 	float t = (vertices[0].position.y - vertices[1].position.y) / (vertices[0].position.y - vertices[2].position.y);
 	Vertex mid = Helper::LerpVertex(vertices[0].Correction(), vertices[2].Correction(), t).Correction();
 
-	//std::cout << " splitTrapezoids  =======================> ";
-	//std::cout << "\n";
-	//vertices[0].position.Print("v0");
-	//vertices[1].position.Print("v1");
-	//vertices[2].position.Print("v2");
-	//std::cout << "t: " << t << ",  xmid: " << xmid;
-	//std::cout << "\n";
-
 	//判断左右
 	if (mid.position.x < vertices[1].position.x) {
 		trapezoids[0].lt = trapezoids[0].rt = vertices[0];
@@ -219,14 +231,6 @@ int CPURenderer::splitTrapezoids(
 
 void CPURenderer::drawTrapezoid(Trapezoid& trapezoid) const
 {
-	//	std::cout << " drawTrapezoid  =======================> ";
-	//	std::cout << "\n";
-	//	trapezoid.ld.position.Print("trapezoid.ld.position");
-	//	trapezoid.rd.position.Print("trapezoid.rd.position");
-	//	std::cout << "\n";
-
-	//curr.position.Print("curr.position");
-
 	float yt = trapezoid.lt.position.y;
 	float yd = trapezoid.ld.position.y;
 
@@ -249,22 +253,19 @@ void CPURenderer::drawTrapezoid(Trapezoid& trapezoid) const
 
 		while (w <= width) {
 			float t = w / width;
+			Vertex curr = Helper::LerpVertex(left, right, t).Correction();
 
-			Vertex curr = Helper::LerpVertex(left, right, t);
+			int currX = (int)curr.position.x;
 
-			//	curr.Print("scanline before --- curr");
+			//深度检测
+			float depth = getDepth(currX, yt);
+			if (depth >= curr.position.z) {
 
-			//还原透视矫正
-			curr = curr.Correction();
-
-			//	std::cout << " drawScanline  =======================> w: " << w << ", t: "<<t;
-			//	std::cout << "\n";
-
-			//	curr.Print("scanline after --- curr");
-
-			//采样贴图
-			Color texCol = texture.Tex(curr.uv);
-			setColor((int)curr.position.x, yt, curr.color * texCol);
+				//采样贴图
+				Color texCol = texture.Tex(curr.uv);
+				setColor(currX, yt, curr.color * texCol);
+				setDepth(currX, yt, curr.position.z);
+			}
 
 			w += 1.0f;
 		}
@@ -279,15 +280,6 @@ Scanline CPURenderer::genScanline(const Trapezoid& trapezoid, float y) const {
 	float tl = (y - trapezoid.ld.position.y) / (trapezoid.lt.position.y - trapezoid.ld.position.y);
 	float tr = (y - trapezoid.rd.position.y) / (trapezoid.rt.position.y - trapezoid.rd.position.y);
 
-	//	std::cout << " genScanline ==========>  y:" << y;
-	//	std::cout << "\n";
-	//	std::cout << "tl: " << tl << ", tr: " << tr;
-	//	std::cout << "\n";
-	//	trapezoid.ld.Print("trapezoid.ld");
-	//	trapezoid.lt.Print("trapezoid.lt");
-	//	trapezoid.rd.Print("trapezoid.rd");
-	//	trapezoid.rt.Print("trapezoid.rt");
-
 	//左右交点
 	Vertex left = Helper::LerpVertex(trapezoid.ld, trapezoid.lt, tl);
 	Vertex right = Helper::LerpVertex(trapezoid.rd, trapezoid.rt, tr);
@@ -300,4 +292,32 @@ Scanline CPURenderer::genScanline(const Trapezoid& trapezoid, float y) const {
 	scanline.right = right;
 
 	return scanline;
+}
+
+bool CPURenderer::needCullFace(const Vertex& v1, const Vertex& v2, const Vertex& v3, 
+	const Vector3<float>& dirView) const 
+{
+	//v1 v2
+	//	v3
+
+	Vector3<float> dir21;
+	dir21.x = v2.position.x - v1.position.x;
+	dir21.y = v2.position.y - v1.position.y;
+	dir21.z = v2.position.z - v1.position.z;
+
+	Vector3<float> dir32;
+	dir32.x = v3.position.x - v2.position.x;
+	dir32.y = v3.position.y - v2.position.y;
+	dir32.z = v3.position.z - v2.position.z;
+
+	//叉乘求面方向
+	Vector3<float> crossValue;
+	crossValue.x = (dir21.y * dir32.z) - (dir21.z * dir32.y);
+	crossValue.y = (dir21.z * dir32.x) - (dir21.x * dir32.z);
+	crossValue.z = (dir21.x * dir32.y) - (dir21.y * dir32.x);
+
+	//点乘求和view方向
+	float dotValue = (crossValue.x, dirView.x) + (crossValue.y, dirView.y) + (crossValue.z, dirView.z);
+
+	return dotValue > 0;
 }
