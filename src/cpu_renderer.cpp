@@ -5,10 +5,6 @@
 
 void CPURenderer::setColor(int x, int y, const Color& color) const {
 
-	//std::cout << " setColor  =======================> ";
-	//std::cout << "x: " << x << ", y: " << y;
-	//std::cout << "\n";
-
 	if (x < viewport.x || x >= viewport.x + viewport.w
 		|| y < viewport.y || y >= viewport.y + viewport.h)
 		return;
@@ -153,7 +149,7 @@ int CPURenderer::cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const 
 
 int CPURenderer::splitTrapezoids(
 	const Vertex& v1, const Vertex& v2, const Vertex& v3,
-	Trapezoid* trapezoids)  const
+	Trapezoid* trapezoids) const
 {
 	//y排序
 	std::vector<Vertex> vertices = { v1, v2, v3 };
@@ -229,12 +225,11 @@ int CPURenderer::splitTrapezoids(
 	}
 }
 
-void CPURenderer::drawTrapezoid(Trapezoid& trapezoid) const
+void CPURenderer::drawTrapezoid(Trapezoid& trapezoid,
+	const Shader& shader) const
 {
 	float yt = trapezoid.lt.position.y;
 	float yd = trapezoid.ld.position.y;
-
-	//trapezoid.ld.Print("before --- trapezoid.ld");
 
 	//透视矫正
 	trapezoid.ld = trapezoid.ld.Correction();
@@ -261,9 +256,10 @@ void CPURenderer::drawTrapezoid(Trapezoid& trapezoid) const
 			float depth = getDepth(currX, yt);
 			if (depth >= curr.position.z) {
 
-				//采样贴图
-				Color texCol = texture.Tex(curr.uv);
-				setColor(currX, yt, curr.color * texCol);
+				//片段着色器
+				Color col = shader.fragChanging(curr);
+
+				setColor(currX, yt, col);
 				setDepth(currX, yt, curr.position.z);
 			}
 
@@ -283,9 +279,6 @@ Scanline CPURenderer::genScanline(const Trapezoid& trapezoid, float y) const {
 	//左右交点
 	Vertex left = Helper::LerpVertex(trapezoid.ld, trapezoid.lt, tl);
 	Vertex right = Helper::LerpVertex(trapezoid.rd, trapezoid.rt, tr);
-
-	//	left.Print("left");
-	//	right.Print("right");
 
 	Scanline scanline;
 	scanline.left = left;
@@ -313,13 +306,6 @@ bool CPURenderer::needCullFace(const Vertex& v1, const Vertex& v2, const Vertex&
 
 	Vector3<float> crossValue = dir21.Cross(dir32);
 	float dotValue = crossValue.Dot(dirView);
-
-	//std::cout << "needCullFace =============> \n";
-	//v1.position.Print("v1");
-	//v2.position.Print("v2");
-	//v3.position.Print("v3");
-	//std::cout << "crossValue: " << crossValue.x << ", " << crossValue.y << ", " << crossValue.z << "\n";
-	//std::cout << "dotValue: " << dotValue << "\n";
 
 	//和视野反向是正面
 	return dotValue <= 0.0f;

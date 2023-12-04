@@ -1,7 +1,11 @@
 ﻿#ifndef _ALL_DEFINE_H
 #define _ALL_DEFINE_H
 
+#include <iostream>
+#include <map>
+
 #include "vector.h"
+#include "color.h"
 
 //视口
 struct Viewport {
@@ -15,6 +19,14 @@ struct Viewport {
 		: x(x), y(y), w(w), h(h)
 	{
 	}
+};
+
+//视锥
+struct Frustum {
+	float near;
+	float far;
+	float aspect;
+	float fov;
 };
 
 //顶点
@@ -46,9 +58,7 @@ struct Vertex {
 		return result;
 	}
 
-	// 1 2 3 1
-	// 1/3 2/3 1/3 1
-	// 1 2 3 1
+	//透视矫正，按z取反
 	Vertex Correction() const {
 		float z = position.z;
 
@@ -60,13 +70,6 @@ struct Vertex {
 
 		return result;
 	}
-
-	void Print(const char* name) const {
-		std::cout << name << ": " << "\n";
-		position.Print("	Vertex-position");
-		color.Print("	Vertex-color");
-		uv.Print("	Vertex-uv");
-	}
 };
 
 //贴图
@@ -77,7 +80,6 @@ public:
 	unsigned char* data;
 
 	Color Tex(const Vector2<float>& uv) const {
-
 		//Point
 		// uv:0.0-1.0
 		int index = ((int)(uv.x * w) + (int)(uv.y * h) * w) * c;
@@ -85,6 +87,7 @@ public:
 		return result;
 	}
 };
+
 
 //平底梯形
 struct Trapezoid {

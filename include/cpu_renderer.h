@@ -12,6 +12,7 @@
 #include "matrix4x4.h"
 #include "all_define.h"
 #include "static_helper.h"
+#include "shader.h"
 
 class CPURenderer {
 
@@ -60,11 +61,7 @@ public:
 		clearColor();
 		clearDepth();
 
-		//std::cout << "===========================> RenderBegin \n";
-
-		//matModel.Print("matModel");
-
-		//Cube
+		//Cube-vertices
 		std::vector<Vertex> vertices = {
 			// position                  ---                  color      ---        uv
 			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::green, Vector2<float>(0.0f, 0.0f)),//0
@@ -110,40 +107,52 @@ public:
 			Vertex(Vector3<float>(0.5f, -0.5f, 1.5f),  Color::green, Vector2<float>(1.0f, 0.0f)),//23
 		};
 
+		DefaultShader shader;
+		shader.uniforms = {
+			texture = texture
+		};
+
 		Matrix4x4 matModel1;
 		matModel1.Identity();
 		matModel1.SetT(2.0f, 0.0f, 5.0f);
 		matModel1.SetR_Y(Helper::Rad2Deg(currentTime * 100.0f));
-		DrawArrays(vertices, matModel1);
+		DrawArrays(vertices, matModel1, shader);
 
 		Matrix4x4 matModel2;
 		matModel2.Identity();
 		matModel2.SetT(0.0f, 0.0f, 5.0f);
 		matModel2.SetR_X(Helper::Rad2Deg(30.0f));
-		DrawArrays(vertices, matModel2);
+		DrawArrays(vertices, matModel2, shader);
 	}
 
-	void DrawArrays(std::vector<Vertex> vertices, const Matrix4x4& matModel)
+	void DrawArrays(std::vector<Vertex> vertices, const Matrix4x4& matModel, const Shader& shader)
 	{
 		for (int i = 0; i < vertices.size(); i += 3) {
 			std::vector<Vertex> v3 = { vertices[i + 0], vertices[i + 1], vertices[i + 2] };
 			DrawTriangle(v3,
-				matModel);
+				matModel,
+				shader);
 		}
 	}
 
 	void DrawTriangle(std::vector<Vertex>& v3,
-		const Matrix4x4& matModel)//mat model
+		const Matrix4x4& matModel,//mat model
+		const Shader& shader)
 	{
+		//顶点着色器
+		for (auto& v : v3) {
+			v.position = shader.vertChanging(v);
+		}
+
 		//m变化
 		for (auto& v : v3) {
 			v.position = matModel * v.position;
 		}
 
 		//视锥剔除
-		if (!camera.frustum.Contains(v3[0].position)
-			&& !camera.frustum.Contains(v3[1].position)
-			&& !camera.frustum.Contains(v3[2].position)) {
+		if (!camera.IsInFrustum(v3[0].position)
+			&& !camera.IsInFrustum(v3[1].position)
+			&& !camera.IsInFrustum(v3[2].position)) {
 			return;
 		}
 
@@ -181,7 +190,8 @@ public:
 		int trapezoidCount = splitTrapezoids(v3[0], v3[1], v3[2],
 			trapezoids);
 		for (int i = 0; i < trapezoidCount; i++) {
-			drawTrapezoid(trapezoids[i]);
+			drawTrapezoid(trapezoids[i],
+				shader);
 		}
 	}
 
@@ -206,20 +216,21 @@ private:
 	void setDepth(int x, int y, float z) const;
 	float getDepth(int x, int y) const;
 
-	//bresenman直线绘制
+	//线框
+	//直线绘制
 	void bresenmanDrawLine(const Vector2<int>& start, const Vector2<int>& end,
 		const Color& color) const;
-
-	//cohenSutherland直线裁剪
+	//直线裁剪
 	bool cohenSutherlandLineClip(Vector2<int>& v0, Vector2<int>& v1, const Vector2<int>& max) const;
 	int cohenSutherlandLineComputeOutCode(const Vector2<int>& v, const Vector2<int>& max) const;
 
-	//trapezoid划分
+	//填色
+	//拆分平底梯形
 	int splitTrapezoids(const Vertex& v1, const Vertex& v2, const Vertex& v3,
 		Trapezoid* trapezoids) const;
-	void drawTrapezoid(Trapezoid& trapezoid) const;
-
-	//scanline扫描线
+	void drawTrapezoid(Trapezoid& trapezoid,
+		const Shader& shader) const;
+	//生成扫描线
 	Scanline genScanline(const Trapezoid& trapezoid, float y) const;
 
 	//背面剔除

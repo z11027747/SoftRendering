@@ -20,11 +20,6 @@ struct Color {
 	{
 	}
 
-	void Print(const char* name) const {
-		std::cout << name << ": ";
-		std::cout << "r: " << (int)r << ", g: " << (int)g << ", b: " << (int)b << "\n";
-	}
-
 	friend Color operator/ (const Color& l, float v) {
 
 		Color result;

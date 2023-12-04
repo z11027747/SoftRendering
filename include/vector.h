@@ -26,11 +26,6 @@ struct Vector2 {
 
 		return result;
 	}
-
-	void Print(const char* name) const {
-		std::cout << name << ": ";
-		std::cout << "x: " << x << ", y: " << y << "\n";
-	}
 };
 
 template <typename T>
@@ -77,11 +72,6 @@ struct Vector3 {
 
 		return dotValue;
 	}
-
-	void Print(const char* name) const {
-		std::cout << name << ": ";
-		std::cout << "x: " << x << ", y: " << y << ", z: " << z << "\n";
-	}
 };
 
 template <typename T>
@@ -120,11 +110,6 @@ struct Vector4 {
 		result.w = m.w / v;
 
 		return result;
-	}
-
-	void Print(const char* name) const {
-		std::cout << name << ": ";
-		std::cout << "x: " << x << ", y: " << y << ", z: " << z << ", w: " << w << "\n";
 	}
 };
 

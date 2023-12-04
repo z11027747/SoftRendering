@@ -75,9 +75,6 @@ public:
 		int w, h, c;
 		unsigned char* data = stbi_load(name, &w, &h, &c, 0);
 
-		//std::cout << " LoadImage  =======================> ";
-		//std::cout << "w: " << w << ", h: " << h << ", c: " << c << "\n";
-
 		Texture result;
 		result.w = w;
 		result.h = h;
